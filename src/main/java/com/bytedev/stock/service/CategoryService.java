@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import com.bytedev.stock.domain.Category;
 import com.bytedev.stock.repository.CategoryRepository;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
 public class CategoryService {
     
@@ -33,8 +36,9 @@ public class CategoryService {
     public Category updateCategory(Long id, Category category){
         Category existingCategory = categoryRepository.findById(id).orElse(null);
         existingCategory.setName(category.getName());
+        existingCategory.setDescription(category.getDescription());
         return categoryRepository.save(existingCategory);
     }
-    
+
 
 }
