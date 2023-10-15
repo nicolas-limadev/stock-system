@@ -1,5 +1,7 @@
 package com.bytedev.stock.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +22,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String price;
+    private double price;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -29,7 +31,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(Long id, String name, String price, String amount) {
+    public Product(Long id, String name, double price) {
         this.id = id;
         this.name = name;
         this.price = price;
