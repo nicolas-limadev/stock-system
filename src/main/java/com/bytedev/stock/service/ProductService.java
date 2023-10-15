@@ -30,19 +30,22 @@ public class ProductService {
             DTO.setId(product.getId());
             DTO.setName(product.getName());
             DTO.setPrice(product.getPrice());
-            DTO.setCategory(product.getCategory().getName());
 
             productDTOs.add(DTO);
         }
         return productDTOs;
     }
 
-    public Product getProductById(Long id){
-        return productRepository.findById(id).orElse(null);
+    public ProductDTO getProductById(Long id){
+        Product product = productRepository.findById(id).orElse(null);
+        if(product != null){
+            return new ProductDTO(product);
+        }
+        return null;
     }
 
     public ProductDTO saveProduct(Product productRequest){
-
+        
         String categoryName = productRequest.getCategory().getName();
         Category category = categoryRepository.findByName(categoryName);
 
@@ -57,9 +60,7 @@ public class ProductService {
 
         Product savedProduct = productRepository.save(product);
 
-
-        return new ProductDTO(savedProduct.getId(), savedProduct.getName(), 
-        savedProduct.getPrice(), category.getName());
+        return new ProductDTO(savedProduct);
     }
 
     public void deleteProduct(Long id){

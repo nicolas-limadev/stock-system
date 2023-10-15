@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,10 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bytedev.stock.domain.Category;
+import com.bytedev.stock.dto.CategoryDTO;
 import com.bytedev.stock.service.CategoryService;
 
 import lombok.AllArgsConstructor;
@@ -30,9 +31,9 @@ public class CategoryController {
 
 
     @GetMapping
-    public List<Category> listCategory(){
+    public List<CategoryDTO> listCategory(){
         
-        return categoryService.listCategory();
+        return categoryService.listCategoryWithProducts();
     }
 
     @GetMapping("/{id}")
@@ -42,10 +43,10 @@ public class CategoryController {
     }
 
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Category saveCategory(@Validated @RequestBody Category category){
+    public ResponseEntity<Category> saveCategory(@Validated @RequestBody CategoryDTO categoryDTO){
 
-        return categoryService.saveCategory(category);
+        Category category = categoryService.saveCategory(categoryDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(category);
     }
 
     @PutMapping("/{id}")

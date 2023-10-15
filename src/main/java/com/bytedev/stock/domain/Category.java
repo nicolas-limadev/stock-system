@@ -2,7 +2,7 @@ package com.bytedev.stock.domain;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,7 +34,7 @@ public class Category {
     public Category(Long id, String name, String description) {
         this.id = id;
         this.name = name;
-        this.description= description;
+        this.description = description;
     } 
 
 }

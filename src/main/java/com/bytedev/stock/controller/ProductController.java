@@ -3,6 +3,7 @@ package com.bytedev.stock.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,7 @@ import com.bytedev.stock.service.ProductService;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-@RequestMapping("products")
+@RequestMapping("/products")
 @RestController
 public class ProductController {
     
@@ -32,8 +33,14 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id){
-        return productService.getProductById(id);
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id){
+        ProductDTO productDTO = productService.getProductById(id);
+
+        if(productDTO != null){
+            return ResponseEntity.ok(productDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 
