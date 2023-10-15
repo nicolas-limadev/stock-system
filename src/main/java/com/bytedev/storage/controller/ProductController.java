@@ -1,4 +1,4 @@
-package com.bytedev.stock.controller;
+package com.bytedev.storage.controller;
 
 import java.util.List;
 
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bytedev.stock.domain.Product;
-import com.bytedev.stock.dto.ProductDTO;
-import com.bytedev.stock.service.ProductService;
+import com.bytedev.storage.domain.Product;
+import com.bytedev.storage.dto.ProductDTO;
+import com.bytedev.storage.service.ProductService;
 
 import lombok.AllArgsConstructor;
 

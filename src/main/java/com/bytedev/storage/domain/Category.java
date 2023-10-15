@@ -1,39 +1,39 @@
-package com.bytedev.stock.domain;
+package com.bytedev.storage.domain;
+
+import java.util.List;
 
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Product {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private double price;
+    private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
 
-    public Product() {
+    public Category() {
     }
 
-    public Product(Long id, String name, double price) {
+    public Category(Long id, String name, String description) {
         this.id = id;
         this.name = name;
-        this.price = price;
-    }
+        this.description = description;
+    } 
 
 }

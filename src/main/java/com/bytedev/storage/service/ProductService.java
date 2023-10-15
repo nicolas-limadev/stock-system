@@ -1,15 +1,15 @@
-package com.bytedev.stock.service;
+package com.bytedev.storage.service;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bytedev.stock.domain.Category;
-import com.bytedev.stock.domain.Product;
-import com.bytedev.stock.dto.ProductDTO;
-import com.bytedev.stock.repository.CategoryRepository;
-import com.bytedev.stock.repository.ProductRepository;
+import com.bytedev.storage.domain.Category;
+import com.bytedev.storage.domain.Product;
+import com.bytedev.storage.dto.ProductDTO;
+import com.bytedev.storage.repository.CategoryRepository;
+import com.bytedev.storage.repository.ProductRepository;
 
 @Service
 public class ProductService {

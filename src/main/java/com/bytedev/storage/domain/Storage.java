@@ -1,4 +1,4 @@
-package com.bytedev.stock.domain;
+package com.bytedev.storage.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode
 @Entity
-public class Stock {
+public class Storage {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

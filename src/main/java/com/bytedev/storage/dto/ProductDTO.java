@@ -1,6 +1,6 @@
-package com.bytedev.stock.dto;
+package com.bytedev.storage.dto;
 
-import com.bytedev.stock.domain.Product;
+import com.bytedev.storage.domain.Product;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Getter;

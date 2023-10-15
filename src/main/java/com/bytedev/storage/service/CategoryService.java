@@ -1,17 +1,16 @@
-package com.bytedev.stock.service;
+package com.bytedev.storage.service;
 
-import com.bytedev.stock.domain.Category;
-import com.bytedev.stock.dto.CategoryDTO;
-import com.bytedev.stock.dto.ProductDTO;
-import com.bytedev.stock.repository.CategoryRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import com.bytedev.storage.domain.Category;
+import com.bytedev.storage.dto.CategoryDTO;
+import com.bytedev.storage.dto.ProductDTO;
+import com.bytedev.storage.repository.CategoryRepository;
 
 @AllArgsConstructor
 @Service

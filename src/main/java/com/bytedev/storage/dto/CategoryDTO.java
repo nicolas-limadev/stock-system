@@ -1,10 +1,9 @@
-package com.bytedev.stock.dto;
+package com.bytedev.storage.dto;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.bytedev.stock.domain.Category;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.bytedev.storage.domain.Category;
 
 import lombok.Getter;
 import lombok.Setter;
