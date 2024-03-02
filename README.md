@@ -3,6 +3,6 @@
 É uma API simples feita com o Spring para controle de estoque de produtos diversos.
 
 ## Como executar o projeto
-´´´shell
-
+´´´shell script
+teste
 ´´´
