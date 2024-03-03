@@ -2,6 +2,7 @@ package com.bytedev.storage.service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +12,13 @@ import com.bytedev.storage.dto.ProductDTO;
 import com.bytedev.storage.repository.CategoryRepository;
 import com.bytedev.storage.repository.ProductRepository;
 
+
+
 @Service
 public class ProductService {
     
     @Autowired
     private ProductRepository productRepository;
-
     @Autowired
     private CategoryRepository categoryRepository;
 
@@ -36,6 +38,7 @@ public class ProductService {
         return productDTOs;
     }
 
+    @SuppressWarnings("null")
     public ProductDTO getProductById(Long id){
         Product product = productRepository.findById(id).orElse(null);
         if(product != null){
