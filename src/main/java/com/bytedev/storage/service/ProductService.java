@@ -12,8 +12,9 @@ import com.bytedev.storage.dto.ProductDTO;
 import com.bytedev.storage.repository.CategoryRepository;
 import com.bytedev.storage.repository.ProductRepository;
 
+import lombok.AllArgsConstructor;
 
-
+@AllArgsConstructor
 @Service
 public class ProductService {
     
@@ -29,7 +30,6 @@ public class ProductService {
 
         for(Product product : products){
             ProductDTO DTO = new ProductDTO();
-            DTO.setId(product.getId());
             DTO.setName(product.getName());
             DTO.setPrice(product.getPrice());
 

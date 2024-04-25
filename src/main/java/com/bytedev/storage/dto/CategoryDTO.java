@@ -5,11 +5,13 @@ import java.util.stream.Collectors;
 
 import com.bytedev.storage.domain.Category;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class CategoryDTO {
     
     private Long id;

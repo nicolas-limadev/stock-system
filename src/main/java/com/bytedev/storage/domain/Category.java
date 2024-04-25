@@ -8,14 +8,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@Data
 public class Category {
 
     @Id

@@ -34,7 +34,6 @@ public class CategoryService {
         .stream()
         .map(product -> {
           ProductDTO productDTO = new ProductDTO();
-          productDTO.setId(product.getId());
           productDTO.setName(product.getName());
           productDTO.setPrice(product.getPrice());
           return productDTO;
