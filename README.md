@@ -21,7 +21,7 @@ API desenvolvida com Spring Framework para gerenciamento e controle de estoque d
 - Spring Data JPA
 - Banco de dados em memória H2
 
-### Configuração do Projeto
+## Configuração do Projeto
 ## Buildar e Executar o projeto
 ```shell script
 ./gradlew bootRun
