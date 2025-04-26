@@ -24,16 +24,15 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
-    
 
     @Autowired
     private CategoryService categoryService;
 
-
     @GetMapping
-    public List<CategoryDTO> listCategory(){
+    public ResponseEntity<List<CategoryDTO>> listCategory(){
         
-        return categoryService.listCategoryWithProducts();
+        List<CategoryDTO> categories = categoryService.listCategoryWithProducts();
+        return ResponseEntity.ok(categories);
     }
 
     @GetMapping("/{id}")
@@ -42,11 +41,10 @@ public class CategoryController {
         return categoryService.getCategoryById(id);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<Category> saveCategory(@Validated @RequestBody CategoryDTO categoryDTO){
-
-        Category category = categoryService.saveCategory(categoryDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(category);
+    @PostMapping
+    public ResponseEntity<CategoryDTO> saveCategory(@Validated @RequestBody CategoryDTO categoryDTO) {
+        CategoryDTO savedCategory = categoryService.saveCategory(categoryDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
     }
 
     @PutMapping("/{id}")

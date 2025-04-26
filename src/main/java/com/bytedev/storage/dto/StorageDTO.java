@@ -1,29 +1,40 @@
 package com.bytedev.storage.dto;
 
-import com.bytedev.storage.domain.Product;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.bytedev.storage.domain.Storage;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class StorageDTO {
     
     private Long id;
-    private int quantity;
-    private Product product;
-
-    public StorageDTO(){
-        
-    }
+    private String name;
+    private List<ProductStorageDTO> products;
 
     public StorageDTO(Storage storage) {
+        if (storage != null) {
+            this.id = storage.getId();
+            this.name = storage.getName();
+            if (storage.getProductStorages() != null) {
+                this.products = storage.getProductStorages().stream()
+                    .map(ProductStorageDTO::new)
+                    .collect(Collectors.toList());
+            }
+        }
+    }
 
-        this.id = storage.getId();
-        this.quantity = storage.getQuantity();
-        this.product = storage.getProduct();
-        
+    public Storage toEntity(){
+        Storage storage = new Storage();
+        storage.setId(this.id);
+        storage.setName(this.name);
+        return storage;
     }
 
 }

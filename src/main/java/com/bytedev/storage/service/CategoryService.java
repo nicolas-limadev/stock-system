@@ -50,8 +50,7 @@ public class CategoryService {
     return categoryRepository.findById(id).orElse(null);
   }
 
-  public Category saveCategory(CategoryDTO categoryDTO) {
-
+  public CategoryDTO saveCategory(CategoryDTO categoryDTO) {
     if (categoryDTO.getName() == null || categoryDTO.getDescription() == null) {
         throw new RuntimeException("All fields must be filled");
     }
@@ -60,7 +59,9 @@ public class CategoryService {
     category.setName(categoryDTO.getName());
     category.setDescription(categoryDTO.getDescription());
 
-    return categoryRepository.save(category);
+    Category savedCategory = categoryRepository.save(categoryDTO.toEntity());
+
+    return new CategoryDTO(savedCategory);
   }
 
   public void deleteCategory(Long id) {
