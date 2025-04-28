@@ -4,52 +4,54 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.bytedev.storage.domain.Storage;
+import org.springframework.web.bind.annotation.*;
 import com.bytedev.storage.dto.StorageDTO;
 import com.bytedev.storage.service.StorageService;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 @RequestMapping("/storages")
 @RestController
 public class StorageController {
 
+    private final StorageService storageService;
+
     @Autowired
-    private StorageService storageService;
+    public StorageController(StorageService storageService) {
+        this.storageService = storageService;
+    }
 
     @GetMapping
-    public List<StorageDTO> listStorage() {
-        return storageService.listStorages();
-
+    public ResponseEntity<List<StorageDTO>> listStorage() {
+        return ResponseEntity.ok(storageService.listStorages());
     }
 
     @GetMapping("/{id}")
-    public StorageDTO getStorageById(Long id) {
-        return storageService.getStorageById(id);
+    public ResponseEntity<StorageDTO> getStorageById(@PathVariable Long id) {
+        StorageDTO storageDTO = storageService.getStorageById(id);
+        if (storageDTO != null) {
+            return ResponseEntity.ok(storageDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<StorageDTO> createStorage(@Validated @RequestBody StorageDTO storageDTO) {
         StorageDTO storage = storageService.saveStorage(storageDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(storage);
     }
 
     @PutMapping("/{id}")
-    public StorageDTO updateStorage(Long id, StorageDTO storageDTO) {
-        return storageService.updateStorage(id, storageDTO);
+    public ResponseEntity<StorageDTO> updateStorage(@PathVariable Long id, @RequestBody StorageDTO storageDTO) {
+        StorageDTO updatedStorage = storageService.updateStorage(id, storageDTO);
+        return ResponseEntity.ok(updatedStorage);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteStorage(Long id) {
-
+    public ResponseEntity<Void> deleteStorage(@PathVariable Long id) {
         storageService.deleteStorage(id);
+        return ResponseEntity.noContent().build();
     }
 }
+
