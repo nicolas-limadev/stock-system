@@ -18,11 +18,11 @@ public class ProductStorage {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id") // A coluna product_id deve existir na tabela
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "storage_id") // A coluna storage_id deve existir na tabela
+    @JoinColumn(name = "storage_id")
     private Storage storage;
 
     private Integer quantity;

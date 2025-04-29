@@ -18,7 +18,7 @@ import com.bytedev.storage.service.ProductStorageService;
 
 import lombok.AllArgsConstructor;
 
-@RequestMapping("/product-storage")
+@RequestMapping("/products-storages")
 @AllArgsConstructor
 @RestController
 public class ProductStorageController {

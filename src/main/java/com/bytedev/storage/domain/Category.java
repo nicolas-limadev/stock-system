@@ -20,10 +20,10 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String description;  // Lombok gerará o getter e setter para isso
+    private String description;
 
     @OneToMany(mappedBy = "category")
-    private List<Product> products;  // Lombok gerará o getter e setter para isso
+    private List<Product> products;
 }
 
 

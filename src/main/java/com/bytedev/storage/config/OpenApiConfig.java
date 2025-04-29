@@ -21,10 +21,10 @@ public class OpenApiConfig {
                         .contact(new Contact()
                                 .name("Byte Dev")
                                 .email("contato@bytedev.com.br")
-                                .url("https://bytedev.com.br")) // HTTPS aqui
+                                .url("https://bytedev.com.br"))
                         .license(new License()
                                 .name("Apache 2.0")
-                                .url("https://springdoc.org"))); // HTTPS aqui também
+                                .url("https://springdoc.org")));
     }
 }
 

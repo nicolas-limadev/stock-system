@@ -13,10 +13,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ProductStorageDTO {
     private Long id;
-    private Long productId;      // Adicionando id do produto
-    private String productName;  // Mantendo o nome para exibição
-    private Long storageId;      // Adicionando id do storage
-    private String storageName;  // Mantendo o nome para exibição
+    private Long productId;
+    private String productName;
+    private Long storageId;
+    private String storageName;
     private Integer quantity;
     
     public ProductStorageDTO(ProductStorage productStorage) {

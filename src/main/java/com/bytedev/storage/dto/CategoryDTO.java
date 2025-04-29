@@ -1,6 +1,6 @@
 package com.bytedev.storage.dto;
 
-import com.bytedev.storage.domain.Category;  // Corrija para o pacote correto
+import com.bytedev.storage.domain.Category;
 import jakarta.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +20,10 @@ public class CategoryDTO {
     private String description;
     private List<ProductDTO> products;
 
-    // Construtor padrão
     public CategoryDTO() {
         this.products = new ArrayList<>();
     }
 
-    // Construtor que recebe a entidade Category
     public CategoryDTO(Category category) {
         this.id = category.getId();
         this.name = category.getName();
@@ -37,10 +35,9 @@ public class CategoryDTO {
                 new ArrayList<>();
     }
 
-    // Método para converter o DTO para a entidade Category
     public Category toEntity() {
         Category category = new Category();
-        category.setId(this.id);  // Atribuindo o id se necessário
+        category.setId(this.id);
         category.setName(this.name);
         category.setDescription(this.description);
         return category;

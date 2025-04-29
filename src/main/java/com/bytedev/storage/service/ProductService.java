@@ -1,8 +1,6 @@
 package com.bytedev.storage.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.bytedev.storage.domain.Category;
 import com.bytedev.storage.domain.Product;
-import com.bytedev.storage.domain.ProductStorage;
-import com.bytedev.storage.domain.Storage;
 import com.bytedev.storage.dto.ProductDTO;
-import com.bytedev.storage.dto.ProductStorageDTO;
 import com.bytedev.storage.repository.CategoryRepository;
 import com.bytedev.storage.repository.ProductRepository;
-import com.bytedev.storage.repository.ProductStorageRepository;
-import com.bytedev.storage.repository.StorageRepository;
+
+
 
 import lombok.AllArgsConstructor;
 
