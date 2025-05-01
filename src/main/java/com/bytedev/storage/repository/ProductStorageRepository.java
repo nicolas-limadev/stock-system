@@ -11,5 +11,5 @@ import com.bytedev.storage.domain.Storage;
 
 @Repository
 public interface ProductStorageRepository extends JpaRepository<ProductStorage, Long> {
-    Optional<ProductStorage> findByProductAndStorage(Product product, Storage storage);
+    Optional<ProductStorage> findByProductAndStorage(Product productId, Storage storageId);
 }

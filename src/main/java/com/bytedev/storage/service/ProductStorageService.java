@@ -34,18 +34,17 @@ public class ProductStorageService {
                 ADD, // Adiciona à quantidade existente
                 SET // Define uma nova quantidade
         }
-
-        public List<ProductStorageDTO> findProductsInStorage(Long storageId) {
-                Storage storage = storageRepository.findById(storageId)
-                                .orElseThrow(() -> new RuntimeException("Storage not found: " + storageId));
-
-                return storage.getProductStorages().stream()
+        public List<ProductStorageDTO> findAllProductStorageRecords() {
+                return productStorageRepository.findAll().stream()
                                 .map(ProductStorageDTO::new)
                                 .collect(Collectors.toList());
         }
 
-        public List<ProductStorageDTO> findAllProductStorageRecords() {
-                return productStorageRepository.findAll().stream()
+        public List<ProductStorageDTO> findProductsByStorageId(Long ProductStorageId) {
+                Storage storage = storageRepository.findById(ProductStorageId)
+                                .orElseThrow(() -> new RuntimeException("Product in Storage not found: " + ProductStorageId));
+
+                return storage.getProductStorages().stream()
                                 .map(ProductStorageDTO::new)
                                 .collect(Collectors.toList());
         }
@@ -99,18 +98,8 @@ public class ProductStorageService {
                 return manageProductQuantity(productId, storageId, quantity, QuantityOperation.SET);
         }
 
-        public void deleteProductFromStorage(Long productId, Long storageId) {
-                Product product = productRepository.findById(productId)
-                                .orElseThrow(() -> new RuntimeException("Product not found: " + productId));
-
-                Storage storage = storageRepository.findById(storageId)
-                                .orElseThrow(() -> new RuntimeException("Storage not found: " + storageId));
-
-                ProductStorage productStorage = productStorageRepository
-                                .findByProductAndStorage(product, storage)
-                                .orElseThrow(() -> new RuntimeException("Product not found in this storage"));
-
-                productStorageRepository.delete(productStorage);
+        public void deleteProductFromStorage(Long ProductStorageId) {
+                productStorageRepository.deleteById(ProductStorageId);
         }
 
 }

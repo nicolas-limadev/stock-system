@@ -5,20 +5,20 @@ import com.bytedev.storage.service.CategoryService;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 
 
-@RequestMapping("/categories")
-@RequiredArgsConstructor
+@RequestMapping("/v1/categories")
+@AllArgsConstructor
 @RestController
 public class CategoryController {
 
-    @Autowired
     private final CategoryService categoryService;
+    private static final String ID_PATH = "/{id}";
 
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> findAll() {
@@ -26,19 +26,19 @@ public class CategoryController {
         return ResponseEntity.ok(dto);
     }
     
-    @GetMapping("/{id}")
+    @GetMapping(ID_PATH)
     public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
         CategoryDTO dto = categoryService.findById(id);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> create(@Valid @RequestBody CategoryDTO dto) {
+    public ResponseEntity<CategoryDTO> create(@RequestBody @Valid CategoryDTO dto) {
         CategoryDTO createdCategory = categoryService.create(dto);
-        return ResponseEntity.status(201).body(createdCategory);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(ID_PATH)
     public ResponseEntity<CategoryDTO> update(
             @PathVariable Long id,
             @Valid @RequestBody CategoryDTO dto) {
@@ -46,7 +46,7 @@ public class CategoryController {
         return ResponseEntity.ok(updatedCategory);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(ID_PATH)
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         categoryService.delete(id);
         return ResponseEntity.noContent().build();

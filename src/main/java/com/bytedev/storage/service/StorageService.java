@@ -46,12 +46,6 @@ public class StorageService {
                 })
                 .orElse(null);
     }
-
-    public StorageDTO findByName(String name) {
-        return storageRepository.findByName(name)
-        .map(StorageDTO::new)
-        .orElseThrow(() -> new RuntimeException("Storage not found: " + name));
-    }
     
     public void delete(Long id) {
         storageRepository.deleteById(id);
