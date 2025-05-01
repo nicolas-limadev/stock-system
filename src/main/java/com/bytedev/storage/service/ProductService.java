@@ -25,51 +25,44 @@ public class ProductService {
     @Autowired
     private final CategoryRepository categoryRepository;
 
-    public List<ProductDTO> listProductWithCategoryStorage() {
+    public List<ProductDTO> listProductsWithCategories() {
         return productRepository.findAll().stream()
                 .map(ProductDTO::new)
                 .collect(Collectors.toList());
     }
 
-    public ProductDTO getProductById(Long id) {
+    public ProductDTO findById(Long id) {
         return productRepository.findById(id)
                 .map(ProductDTO::new)
                 .orElse(null);
     }
 
-    public ProductDTO saveProduct(ProductDTO productDTO) {
-        Product product = new Product();
-        product.setName(productDTO.getName());
-        product.setPrice(productDTO.getPrice());
-
-        if (productDTO.getCategoryId() != null) {
-            Category category = categoryRepository.findById(productDTO.getCategoryId())
-                    .orElseThrow(() -> new RuntimeException("Category not found: " + productDTO.getCategoryId()));
+    public ProductDTO create(ProductDTO dto) {
+        Product product = dto.toEntity();
+        if (dto.getCategoryId() != null) {
+            Category category = categoryRepository.findById(dto.getCategoryId())
+                    .orElseThrow(() -> new RuntimeException("Category not found: " + dto.getCategoryId()));
             product.setCategory(category);
         }
-
         Product savedProduct = productRepository.save(product);
         return new ProductDTO(savedProduct);
     }
 
-    public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+    public ProductDTO update(Long id, ProductDTO dto) {
+        return productRepository.findById(id)
+        .map(product -> {
+            dto.toEntity();
+            if (dto.getCategoryId() != null) {
+                Category category = categoryRepository.findById(dto.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found: " + dto.getCategoryId()));
+                product.setCategory(category);
+            }
+            return new ProductDTO(productRepository.save(product));
+        })
+        .orElseThrow(() -> new RuntimeException("Product not found: " + id));
     }
 
-    public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
-        return productRepository.findById(id)
-                .map(product -> {
-                    product.setName(productDTO.getName());
-                    product.setPrice(productDTO.getPrice());
-                    
-                    if (productDTO.getCategoryId() != null) {
-                        Category category = categoryRepository.findById(productDTO.getCategoryId())
-                                .orElseThrow(() -> new RuntimeException("Category not found: " + productDTO.getCategoryId()));
-                        product.setCategory(category);
-                    }
-                    
-                    return new ProductDTO(productRepository.save(product));
-                })
-                .orElseThrow(() -> new RuntimeException("Product not found: " + id));
+    public void delete(Long id) {
+        productRepository.deleteById(id);
     }
 }

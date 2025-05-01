@@ -1,4 +1,4 @@
-package com.bytedev.exception;
+package com.bytedev.storage.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

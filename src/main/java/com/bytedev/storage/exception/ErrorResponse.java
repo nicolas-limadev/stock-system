@@ -1,4 +1,4 @@
-package com.bytedev.exception;
+package com.bytedev.storage.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

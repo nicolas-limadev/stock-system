@@ -32,9 +32,7 @@ public class StorageDTO {
 
     public Storage toEntity(){
         Storage storage = new Storage();
-        storage.setId(this.id);
         storage.setName(this.name);
         return storage;
     }
-
 }

@@ -37,7 +37,6 @@ public class CategoryDTO {
 
     public Category toEntity() {
         Category category = new Category();
-        category.setId(this.id);
         category.setName(this.name);
         category.setDescription(this.description);
         return category;

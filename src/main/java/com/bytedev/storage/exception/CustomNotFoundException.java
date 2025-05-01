@@ -1,4 +1,4 @@
-package com.bytedev.exception;
+package com.bytedev.storage.exception;
 
 public class CustomNotFoundException extends RuntimeException {
 

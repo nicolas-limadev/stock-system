@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 
@@ -18,13 +17,9 @@ public class OpenApiConfig {
                         .title("Storage Management API")
                         .version("1.0")
                         .description("API para gerenciamento de produtos e estoques")
-                        .contact(new Contact()
-                                .name("Byte Dev")
-                                .email("contato@bytedev.com.br")
-                                .url("https://bytedev.com.br"))
                         .license(new License()
                                 .name("Apache 2.0")
-                                .url("https://springdoc.org")));
+                                .url("https://opensource.org/license/apache-2-0")));
     }
 }
 

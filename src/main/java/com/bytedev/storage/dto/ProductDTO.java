@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ProductDTO {
-    
+
     private Long id;
     private String name;
     private double price;
@@ -25,15 +25,19 @@ public class ProductDTO {
         this.id = product.getId();
         this.name = product.getName();
         this.price = product.getPrice();
-        this.categoryId = product.getCategory() != null ? 
-            product.getCategory().getId() : null;
-        
+        this.categoryId = product.getCategory() != null ? product.getCategory().getId() : null;
+
         if (product.getProductStorages() != null) {
             this.storages = product.getProductStorages().stream()
-                .map(ProductStorageDTO::new)
-                .collect(Collectors.toList());
+                    .map(ProductStorageDTO::new)
+                    .collect(Collectors.toList());
         }
     }
+
+    public Product toEntity() {
+        Product product = new Product();
+        product.setName(this.name);
+        product.setPrice(this.price);
+        return product;
+    }
 }
-
-
