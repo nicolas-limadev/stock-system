@@ -26,7 +26,7 @@ public class StorageController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StorageDTO> getById(@PathVariable Long id) {
+    public ResponseEntity<StorageDTO> findById(@PathVariable Long id) {
         StorageDTO storageDTO = storageService.findById(id);
         if (storageDTO != null) {
             return ResponseEntity.ok(storageDTO);

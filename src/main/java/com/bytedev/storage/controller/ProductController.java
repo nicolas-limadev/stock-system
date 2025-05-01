@@ -22,13 +22,13 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> getProducts() {
-        List<ProductDTO> products = productService.listProductsWithCategories();
+    public ResponseEntity<List<ProductDTO>> findAll() {
+        List<ProductDTO> products = productService.findAll();
         return ResponseEntity.ok(products);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> getById(@PathVariable Long id) {
+    public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
         ProductDTO productDTO = productService.findById(id);
         if (productDTO != null) {
             return ResponseEntity.ok(productDTO);
@@ -55,4 +55,3 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 }
-

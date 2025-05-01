@@ -25,7 +25,7 @@ public class ProductService {
     @Autowired
     private final CategoryRepository categoryRepository;
 
-    public List<ProductDTO> listProductsWithCategories() {
+    public List<ProductDTO> findAll() {
         return productRepository.findAll().stream()
                 .map(ProductDTO::new)
                 .collect(Collectors.toList());
