@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import com.bytedev.storage.domain.Storage;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,10 +14,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@Schema(description = "Objeto de transferência de dados que representa um armazenamento")
 public class StorageDTO {
     
+    @Schema(description = "Identificador único do armazenamento", example = "1")
     private Long id;
+    
+    @Schema(description = "Nome do armazenamento", example = "Depósito Principal")
     private String name;
+    
+    @Schema(description = "Lista de produtos armazenados neste local")
     private List<ProductStorageDTO> products;
 
     public StorageDTO(Storage storage) {
