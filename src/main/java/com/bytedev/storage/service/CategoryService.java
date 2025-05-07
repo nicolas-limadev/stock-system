@@ -2,6 +2,8 @@ package com.bytedev.storage.service;
 
 import com.bytedev.storage.domain.Category;
 import com.bytedev.storage.dto.CategoryDTO;
+import com.bytedev.storage.exception.CustomException;
+import com.bytedev.storage.exception.CustomNotFoundException;
 import com.bytedev.storage.repository.CategoryRepository;
 
 import lombok.AllArgsConstructor;
@@ -21,10 +23,14 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     public List<CategoryDTO> findAll() {
-        List<Category> categories = categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
-        return categories.stream()
-                .map(CategoryDTO::new)
-                .collect(Collectors.toList());
+        try {
+            List<Category> categories = categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
+            return categories.stream()
+                    .map(CategoryDTO::new)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new CustomException("Error fetching categories: " + e.getMessage());
+        }
     }
 
     public CategoryDTO findById(Long id) {
@@ -49,6 +55,13 @@ public class CategoryService {
     }
 
     public void delete(Long id) {
-        categoryRepository.deleteById(id);
+        if (!categoryRepository.existsById(id)) {
+            throw new CustomNotFoundException("Category not found with id: " + id);
+        }
+        try {
+            categoryRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new CustomException("Error deleting category: " + e.getMessage());
+        }
     }
 }

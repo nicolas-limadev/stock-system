@@ -34,15 +34,21 @@ public class ProductStorageService {
                 ADD, // Adiciona à quantidade existente
                 SET // Define uma nova quantidade
         }
+
         public List<ProductStorageDTO> findAllProductStorageRecords() {
-                return productStorageRepository.findAll().stream()
-                                .map(ProductStorageDTO::new)
-                                .collect(Collectors.toList());
+                try {
+                        return productStorageRepository.findAll().stream()
+                                        .map(ProductStorageDTO::new)
+                                        .collect(Collectors.toList());
+                } catch (Exception e) {
+                        throw new CustomException("Error fetching products in storages: " + e.getMessage());
+                }
         }
 
         public List<ProductStorageDTO> findProductsByStorageId(Long ProductStorageId) {
                 Storage storage = storageRepository.findById(ProductStorageId)
-                                .orElseThrow(() -> new RuntimeException("Product in Storage not found: " + ProductStorageId));
+                                .orElseThrow(() -> new RuntimeException(
+                                                "Product in Storage not found: " + ProductStorageId));
 
                 return storage.getProductStorages().stream()
                                 .map(ProductStorageDTO::new)
@@ -99,7 +105,14 @@ public class ProductStorageService {
         }
 
         public void deleteProductFromStorage(Long ProductStorageId) {
-                productStorageRepository.deleteById(ProductStorageId);
+                if (!productStorageRepository.existsById(ProductStorageId)) {
+                   throw new CustomNotFoundException("Product in Storage not found with id: " + ProductStorageId);
+                }
+                try {
+                   productStorageRepository.deleteById(ProductStorageId);
+                } catch (Exception e) {
+                   throw new CustomException("Error deleting product in storage: " + e.getMessage());
+                }
         }
 
 }

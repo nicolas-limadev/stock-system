@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.bytedev.storage.dto.ProductDTO;
@@ -38,7 +37,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> create(@Validated @RequestBody @Valid ProductDTO productDTO) {
+    public ResponseEntity<ProductDTO> create(@RequestBody @Valid ProductDTO productDTO) {
         ProductDTO savedProduct = productService.create(productDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
     }
