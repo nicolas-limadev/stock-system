@@ -65,8 +65,8 @@ class CategoryControllerTest {
     @Test
     void create_ShouldReturnCreatedCategory() throws Exception {
         // Arrange
-        CategoryDTO categoryToCreate = new CategoryDTO();
-        CategoryDTO createdCategory = new CategoryDTO();
+        CategoryDTO categoryToCreate = createCategoryDTO(null, "New Category", "Description");
+        CategoryDTO createdCategory = createCategoryDTO(1L, "New Category", "Description");
         
         when(categoryService.create(any(CategoryDTO.class))).thenReturn(createdCategory);
 
@@ -81,10 +81,9 @@ class CategoryControllerTest {
     @Test
     void update_ShouldReturnUpdatedCategory() throws Exception {
         // Arrange
-        CategoryDTO categoryToUpdate = new CategoryDTO();
-        CategoryDTO updatedCategory = new CategoryDTO();
+        CategoryDTO categoryToUpdate = createCategoryDTO(1L, "Updated Category", "Description Updated");
         
-        when(categoryService.update(eq(1L), any(CategoryDTO.class))).thenReturn(updatedCategory);
+        when(categoryService.update(eq(1L), any(CategoryDTO.class))).thenReturn(categoryToUpdate);
 
         // Act & Assert
         mockMvc.perform(put("/v1/categories/1")
@@ -102,5 +101,13 @@ class CategoryControllerTest {
         // Act & Assert
         mockMvc.perform(delete("/v1/categories/1"))
                 .andExpect(status().isNoContent());
+    }
+
+    private CategoryDTO createCategoryDTO(Long id, String name, String description) {
+        CategoryDTO categoryDTO = new CategoryDTO();
+        categoryDTO.setId(id);
+        categoryDTO.setName(name);
+        categoryDTO.setDescription(description);
+        return categoryDTO;
     }
 }

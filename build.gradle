@@ -30,6 +30,7 @@ dependencies {
     
     // Banco de dados
     implementation 'com.h2database:h2'
+    implementation 'org.postgresql:postgresql'
 
     // Testes
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

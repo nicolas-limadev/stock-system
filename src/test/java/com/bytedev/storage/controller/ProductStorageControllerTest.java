@@ -61,7 +61,7 @@ class ProductStorageControllerTest {
         ProductStorageDTO record2 = createProductStorageDTO(2L, 2L, "Product 2", storageId, "Storage 1", 20);
         List<ProductStorageDTO> records = Arrays.asList(record1, record2);
         
-        when(productStorageService.findProductsByStorageId(storageId)).thenReturn(records);
+        when(productStorageService.findProductsByStorageId(eq(storageId))).thenReturn(records);
 
         // Act & Assert
         mockMvc.perform(get("/v1/products-storages/" + storageId)

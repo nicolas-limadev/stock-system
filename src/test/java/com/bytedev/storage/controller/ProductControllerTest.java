@@ -103,8 +103,9 @@ class ProductControllerTest {
     void update_ShouldReturnUpdatedProduct() throws Exception {
         // Arrange
         ProductDTO productToUpdate = createProductDTO(1L, "Updated Product", 25.0);
+        ProductDTO updatedProduct = createProductDTO(1L, "Updated Product", 25.0);
         
-        doNothing().when(productService).update(eq(1L), any(ProductDTO.class));
+        when(productService.update(eq(1L), any(ProductDTO.class))).thenReturn(updatedProduct);
 
         // Act & Assert
         mockMvc.perform(put("/v1/products/1")

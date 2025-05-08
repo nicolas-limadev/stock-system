@@ -27,8 +27,8 @@ public class ProductStorageController {
     }
 
     @GetMapping(ID_PATH)
-    public ResponseEntity<List<ProductStorageDTO>> findProductsInStorage(@PathVariable Long Id) {
-        List<ProductStorageDTO> products = productStorageService.findProductsByStorageId(Id);
+    public ResponseEntity<List<ProductStorageDTO>> findProductsInStorage(@PathVariable Long id) {
+        List<ProductStorageDTO> products = productStorageService.findProductsByStorageId(id);
         return ResponseEntity.ok(products);
     }
 
@@ -52,8 +52,8 @@ public class ProductStorageController {
     }
 
     @DeleteMapping(ID_PATH)
-    public ResponseEntity<Void> deleteProductFromStorage(@PathVariable Long Id) {
-        productStorageService.deleteProductFromStorage(Id);
+    public ResponseEntity<Void> deleteProductFromStorage(@PathVariable Long id) {
+        productStorageService.deleteProductFromStorage(id);
         return ResponseEntity.noContent().build();
     }
 }

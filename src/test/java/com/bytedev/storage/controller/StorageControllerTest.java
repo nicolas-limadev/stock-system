@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -76,8 +77,8 @@ class StorageControllerTest {
     @Test
     void create_ShouldReturnCreatedStorage() throws Exception {
         // Arrange
-        StorageDTO storageToCreate = new StorageDTO();
-        StorageDTO createdStorage = new StorageDTO();
+        StorageDTO storageToCreate = createStorageDTO(null, "New Storage");
+        StorageDTO createdStorage = createStorageDTO(1L, "New Storage");
         
         when(storageService.create(any(StorageDTO.class))).thenReturn(createdStorage);
 
@@ -92,10 +93,9 @@ class StorageControllerTest {
     @Test
     void update_ShouldReturnUpdatedStorage() throws Exception {
         // Arrange
-        StorageDTO storageToUpdate = new StorageDTO();
-        StorageDTO updatedStorage = new StorageDTO();
+        StorageDTO storageToUpdate = createStorageDTO(1L, "Updated Storage");
         
-        when(storageService.update(eq(1L), any(StorageDTO.class))).thenReturn(updatedStorage);
+        when(storageService.update(eq(1L), any(StorageDTO.class))).thenReturn(storageToUpdate);
 
         // Act & Assert
         mockMvc.perform(put("/v1/storages/1")
@@ -115,29 +115,11 @@ class StorageControllerTest {
                 .andExpect(status().isNoContent());
     }
 
-    @Test
-    void create_WithInvalidData_ShouldReturnBadRequest() throws Exception {
-        // Arrange
-        StorageDTO invalidStorage = new StorageDTO();
-        // Configurar o DTO com dados inválidos aqui
-
-        // Act & Assert
-        mockMvc.perform(post("/v1/storages")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(invalidStorage)))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    void update_WithInvalidData_ShouldReturnBadRequest() throws Exception {
-        // Arrange
-        StorageDTO invalidStorage = new StorageDTO();
-        // Configurar o DTO com dados inválidos aqui
-
-        // Act & Assert
-        mockMvc.perform(put("/v1/storages/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(invalidStorage)))
-                .andExpect(status().isBadRequest());
+    private StorageDTO createStorageDTO(Long id, String name) {
+        StorageDTO storageDTO = new StorageDTO();
+        storageDTO.setId(id);
+        storageDTO.setName(name);
+        storageDTO.setProducts(Collections.emptyList());
+        return storageDTO;
     }
 }

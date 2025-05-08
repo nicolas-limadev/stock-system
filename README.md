@@ -22,13 +22,36 @@ API desenvolvida com Spring Framework para gerenciamento e controle de estoque d
 - Banco de dados em memória H2
 
 ## Configuração do Projeto
-## Buildar e Executar o projeto
+## Remover a pasta build, buildar e testar o projeto
+```shell script
+./gradlew clean build
+```
+## Executar os testes unitários do projeto
+```shell script
+./gradlew test
+```
+## Buildar e executar o projeto padrão
 ```shell script
 ./gradlew bootRun
 ```
 
-## Acessar a documentação
+## Desenvolvimento
+```shell script
+./gradlew bootRun --args='--spring.profiles.active=dev'
 ```
-http://localhost:8080/api-docs
+
+## Produção
+```shell script
+./gradlew bootRun --args='--spring.profiles.active=prod'
+```
+
+## Acessar a documentação com todos os endpoints
+```
+http://localhost:8080/
+```
+
+## Acessar relatório de testes (Somente localmente)
+```
+http://localhost:8080/test-reports
 ```
 
