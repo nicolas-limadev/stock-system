@@ -1,64 +1,54 @@
 package com.bytedev.storage.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.bytedev.storage.domain.Category;
 import com.bytedev.storage.dto.CategoryDTO;
 import com.bytedev.storage.service.CategoryService;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
+
+@RequestMapping("/v1/categories")
 @AllArgsConstructor
 @RestController
-@RequestMapping("/category")
 public class CategoryController {
 
-    @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
+    private static final String ID_PATH = "/{id}";
 
     @GetMapping
-    public ResponseEntity<List<CategoryDTO>> listCategory(){
-        
-        List<CategoryDTO> categories = categoryService.listCategoryWithProducts();
-        return ResponseEntity.ok(categories);
+    public ResponseEntity<List<CategoryDTO>> findAll() {
+        List<CategoryDTO> dto = categoryService.findAll();
+        return ResponseEntity.ok(dto);
     }
-
-    @GetMapping("/{id}")
-    public Category getCategoryById(Long id){
-        
-        return categoryService.getCategoryById(id);
+    
+    @GetMapping(ID_PATH)
+    public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
+        CategoryDTO dto = categoryService.findById(id);
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> saveCategory(@Validated @RequestBody CategoryDTO categoryDTO) {
-        CategoryDTO savedCategory = categoryService.saveCategory(categoryDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
+    public ResponseEntity<CategoryDTO> create(@RequestBody @Valid CategoryDTO dto) {
+        CategoryDTO createdCategory = categoryService.create(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
     }
 
-    @PutMapping("/{id}")
-    public Category updateCategory(Long id, Category category) {
-        
-        return categoryService.updateCategory(id, category);
+    @PutMapping(ID_PATH)
+    public ResponseEntity<CategoryDTO> update(
+            @PathVariable Long id,
+            @Valid @RequestBody CategoryDTO dto) {
+        CategoryDTO updatedCategory = categoryService.update(id, dto);
+        return ResponseEntity.ok(updatedCategory);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteCategory(Long id){
-        
-        categoryService.deleteCategory(id);
+    @DeleteMapping(ID_PATH)
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        categoryService.delete(id);
+        return ResponseEntity.noContent().build();
     }
-
-    
-
 }
