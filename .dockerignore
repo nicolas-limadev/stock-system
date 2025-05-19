@@ -1,0 +1,17 @@
+.git
+.gradle
+build
+!build/libs/*.jar
+.idea
+*.iml
+*.iws
+*.ipr
+.settings
+.project
+.classpath
+.factorypath
+.vscode
+bin
+out
+logs
+*.log

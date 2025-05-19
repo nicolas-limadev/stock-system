@@ -4,12 +4,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bytedev.storage.domain.Product;
 import com.bytedev.storage.domain.ProductStorage;
 import com.bytedev.storage.domain.Storage;
 import com.bytedev.storage.dto.ProductStorageDTO;
+import com.bytedev.storage.exception.CustomException;
+import com.bytedev.storage.exception.CustomNotFoundException;
 import com.bytedev.storage.repository.ProductRepository;
 import com.bytedev.storage.repository.ProductStorageRepository;
 import com.bytedev.storage.repository.StorageRepository;
@@ -20,79 +23,96 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ProductStorageService {
 
-    private final ProductStorageRepository productStorageRepository;
-    private final ProductRepository productRepository;
-    private final StorageRepository storageRepository;
+        @Autowired
+        private final ProductStorageRepository productStorageRepository;
+        @Autowired
+        private final ProductRepository productRepository;
+        @Autowired
+        private final StorageRepository storageRepository;
 
-    public ProductStorageDTO addProductToStorage(Long productId, Long storageId, Integer quantity) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found: " + productId));
-        
-        Storage storage = storageRepository.findById(storageId)
-                .orElseThrow(() -> new RuntimeException("Storage not found: " + storageId));
-
-        Optional<ProductStorage> existingProductStorage = productStorageRepository
-                .findByProductAndStorage(product, storage);
-
-        ProductStorage productStorage;
-        if (existingProductStorage.isPresent()) {
-            productStorage = existingProductStorage.get();
-            productStorage.setQuantity(productStorage.getQuantity() + quantity);
-        } else {
-            productStorage = new ProductStorage();
-            productStorage.setProduct(product);
-            productStorage.setStorage(storage);
-            productStorage.setQuantity(quantity);
+        public enum QuantityOperation {
+                ADD, // Adiciona à quantidade existente
+                SET // Define uma nova quantidade
         }
 
-        productStorage = productStorageRepository.save(productStorage);
-        return new ProductStorageDTO(productStorage);
-    }
+        public List<ProductStorageDTO> findAllProductStorageRecords() {
+                try {
+                        return productStorageRepository.findAll().stream()
+                                        .map(ProductStorageDTO::new)
+                                        .collect(Collectors.toList());
+                } catch (Exception e) {
+                        throw new CustomException("Error fetching products in storages: " + e.getMessage());
+                }
+        }
 
-    public ProductStorageDTO updateProductQuantity(Long productId, Long storageId, Integer newQuantity) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found: " + productId));
-        
-        Storage storage = storageRepository.findById(storageId)
-                .orElseThrow(() -> new RuntimeException("Storage not found: " + storageId));
+        public List<ProductStorageDTO> findProductsByStorageId(Long ProductStorageId) {
+                Storage storage = storageRepository.findById(ProductStorageId)
+                                .orElseThrow(() -> new RuntimeException(
+                                                "Product in Storage not found: " + ProductStorageId));
 
-        ProductStorage productStorage = productStorageRepository
-                .findByProductAndStorage(product, storage)
-                .orElseThrow(() -> new RuntimeException("Product not found in this storage"));
+                return storage.getProductStorages().stream()
+                                .map(ProductStorageDTO::new)
+                                .collect(Collectors.toList());
+        }
 
-        productStorage.setQuantity(newQuantity);
-        productStorage = productStorageRepository.save(productStorage);
-        
-        return new ProductStorageDTO(productStorage);
-    }
+        public ProductStorageDTO manageProductQuantity(
+                        Long productId,
+                        Long storageId,
+                        Integer quantity,
+                        QuantityOperation operation) {
+                try {
+                        if (quantity < 0) {
+                                throw new Exception("A quantidade não pode ser negativa");
+                        }
 
-    public List<ProductStorageDTO> getProductsByStorage(Long storageId) {
-        Storage storage = storageRepository.findById(storageId)
-                .orElseThrow(() -> new RuntimeException("Storage not found: " + storageId));
-        
-        return storage.getProductStorages().stream()
-                .map(ProductStorageDTO::new)
-                .collect(Collectors.toList());
-    }
+                        Product product = productRepository.findById(productId)
+                                        .orElseThrow(() -> new CustomNotFoundException(
+                                                        "Produto não encontrado: " + productId));
 
-    public List<ProductStorageDTO> getAllProductStorages() {
-        return productStorageRepository.findAll().stream()
-                .map(ProductStorageDTO::new)
-                .collect(Collectors.toList());
-    }
+                        Storage storage = storageRepository.findById(storageId)
+                                        .orElseThrow(() -> new CustomNotFoundException(
+                                                        "Storage não encontrado: " + storageId));
 
-    public void removeProductFromStorage(String productName, String storageName) {
-        Product product = productRepository.findByName(productName)
-                .orElseThrow(() -> new RuntimeException("Product not found: " + productName));
-        
-        Storage storage = storageRepository.findByName(storageName)
-                .orElseThrow(() -> new RuntimeException("Storage not found: " + storageName));
+                        Optional<ProductStorage> existingProductStorage = productStorageRepository
+                                        .findByProductAndStorage(product, storage);
 
-        ProductStorage productStorage = productStorageRepository
-                .findByProductAndStorage(product, storage)
-                .orElseThrow(() -> new RuntimeException("Product not found in this storage"));
+                        ProductStorage productStorage;
+                        if (existingProductStorage.isPresent()) {
+                                productStorage = existingProductStorage.get();
+                                int newQuantity = operation == QuantityOperation.ADD
+                                                ? productStorage.getQuantity() + quantity
+                                                : quantity;
+                                productStorage.setQuantity(newQuantity);
+                        } else {
+                                productStorage = new ProductStorage();
+                                productStorage.setProduct(product);
+                                productStorage.setStorage(storage);
+                                productStorage.setQuantity(quantity);
+                        }
 
-        productStorageRepository.delete(productStorage);
-    }
+                        return new ProductStorageDTO(productStorageRepository.save(productStorage));
+                } catch (Exception e) {
+                        throw new CustomException("Erro ao gerenciar quantidade do produto no storage", e);
+                }
+        }
+
+        public ProductStorageDTO addProductQuantity(Long productId, Long storageId, Integer quantity) {
+                return manageProductQuantity(productId, storageId, quantity, QuantityOperation.ADD);
+        }
+
+        public ProductStorageDTO setProductQuantity(Long productId, Long storageId, Integer quantity) {
+                return manageProductQuantity(productId, storageId, quantity, QuantityOperation.SET);
+        }
+
+        public void deleteProductFromStorage(Long ProductStorageId) {
+                if (!productStorageRepository.existsById(ProductStorageId)) {
+                   throw new CustomNotFoundException("Product in Storage not found with id: " + ProductStorageId);
+                }
+                try {
+                   productStorageRepository.deleteById(ProductStorageId);
+                } catch (Exception e) {
+                   throw new CustomException("Error deleting product in storage: " + e.getMessage());
+                }
+        }
 
 }
