@@ -19,16 +19,39 @@ API desenvolvida com Spring Framework para gerenciamento e controle de estoque d
 - Spring Framework
 - Spring Boot
 - Spring Data JPA
-- Banco de dados em memória H2
+- Lombok
+- Banco de dados em memória H2 o ambiente de testes e desenvolvimento
+- Banco de dados postgres para o ambiente de produção
+- Docker e docker compose
 
-## Configuração do Projeto
-## Buildar e Executar o projeto
+# Configuração do Projeto
+
+## Remover a pasta build, buildar e testar o projeto
+```shell script
+./gradlew clean build
+```
+## Buildar e executar o projeto
 ```shell script
 ./gradlew bootRun
 ```
-
-## Acessar a documentação
+## Desenvolvimento (Local)
+```shell script
+./gradlew bootRun --args='--spring.profiles.active=dev'
 ```
-http://localhost:8080/api-docs
+## Produção (Local)
+```shell script
+./gradlew bootRun --args='--spring.profiles.active=prod'
+```
+## Executar com o Docker
+```shell script
+docker compose up --build -d
+```
+## Acessar a documentação com todos os endpoints
+```
+http://localhost:8080
+```
+## Acessar relatório de testes (Somente localmente)
+```
+http://localhost:8080/test-reports
 ```
 

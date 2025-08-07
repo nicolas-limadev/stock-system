@@ -1,7 +1,10 @@
-package com.bytedev.exception;
+package com.bytedev.storage.exception;
 
 public class CustomException extends RuntimeException {
     public CustomException(String message, Exception e){
         super(message, e);
+    }
+    public CustomException(String message){
+        super(message);
     }
 }

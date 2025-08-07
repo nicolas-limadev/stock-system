@@ -2,52 +2,58 @@ package com.bytedev.storage.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.bytedev.storage.dto.AddProductToStorageDTO;
+import org.springframework.web.bind.annotation.*;
 import com.bytedev.storage.dto.ProductStorageDTO;
-import com.bytedev.storage.dto.UpdateProductQuantityDTO;
+import com.bytedev.storage.dto.ProductStorageQuantityDTO;
 import com.bytedev.storage.service.ProductStorageService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
-@RequestMapping("/product-storage")
+@RequestMapping("/v1/products-storages")
 @AllArgsConstructor
 @RestController
 public class ProductStorageController {
-    
+
     private final ProductStorageService productStorageService;
+    private static final String ID_PATH = "/{id}";
 
-    @PostMapping("/add")
-    public ResponseEntity<ProductStorageDTO> addProductToStorage(@RequestBody AddProductToStorageDTO dto) {
-        ProductStorageDTO result = productStorageService.addProductToStorage(
-            dto.getProductId(), 
-            dto.getStorageId(), 
-            dto.getQuantity()
-        );
-        return ResponseEntity.ok(result);
-    }
-
-    @GetMapping("/storage/{storageId}")
-    public ResponseEntity<List<ProductStorageDTO>> getProductsByStorage(@PathVariable Long storageId) {
-        List<ProductStorageDTO> products = productStorageService.getProductsByStorage(storageId);
+    @GetMapping
+    public ResponseEntity<List<ProductStorageDTO>> findAllProductStorageRecords() {
+        List<ProductStorageDTO> products = productStorageService.findAllProductStorageRecords();
         return ResponseEntity.ok(products);
     }
 
-    @PutMapping("/update-quantity")
-    public ResponseEntity<ProductStorageDTO> updateQuantity(@RequestBody UpdateProductQuantityDTO dto) {
-        ProductStorageDTO result = productStorageService.updateProductQuantity(
-            dto.getProductId(),
-            dto.getStorageId(),
-            dto.getNewQuantity()
-        );
+    @GetMapping(ID_PATH)
+    public ResponseEntity<List<ProductStorageDTO>> findProductsInStorage(@PathVariable Long id) {
+        List<ProductStorageDTO> products = productStorageService.findProductsByStorageId(id);
+        return ResponseEntity.ok(products);
+    }
+
+    @PostMapping
+    public ResponseEntity<ProductStorageDTO> addProductToStorage(@RequestBody @Valid ProductStorageQuantityDTO dto) {
+        ProductStorageDTO result = productStorageService.addProductQuantity(
+                dto.getProductId(),
+                dto.getStorageId(),
+                dto.getQuantity());
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @PutMapping
+    public ResponseEntity<ProductStorageDTO> updateProductQuantityInStorage(
+            @RequestBody ProductStorageQuantityDTO dto) {
+        ProductStorageDTO result = productStorageService.setProductQuantity(
+                dto.getProductId(),
+                dto.getStorageId(),
+                dto.getQuantity());
         return ResponseEntity.ok(result);
+    }
+
+    @DeleteMapping(ID_PATH)
+    public ResponseEntity<Void> deleteProductFromStorage(@PathVariable Long id) {
+        productStorageService.deleteProductFromStorage(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,0 +1,36 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: stock-system-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - DB_HOST=postgres
+    networks:
+      - stock-network
+
+  postgres:
+    image: postgres:15
+    container_name: stock-system-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: stock_db
+      POSTGRES_USER: nicklimadev
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - stock-network
+
+networks:
+  stock-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
